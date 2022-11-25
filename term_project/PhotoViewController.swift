@@ -11,6 +11,8 @@ import Photos
 class PhotoViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var clearAllButton: UIBarButtonItem!
     @IBOutlet weak var photoView: UIImageViewForDrawing!
+    @IBOutlet weak var undoButton: UIButton!
+    @IBOutlet weak var lineSizeSlider: UISlider!
     
     private var asset: PHAsset
     
@@ -45,6 +47,8 @@ class PhotoViewController: UIViewController, UIGestureRecognizerDelegate {
         view.isMultipleTouchEnabled = true
 
         PHPhotoLibrary.shared().register(self)
+        
+        updateUndoButton()
     }
     
     deinit {
@@ -54,8 +58,31 @@ class PhotoViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBAction func clearAllClicked(_ sender: Any) {
         photoView.image = imageArray.first!
         photoView.incrementalImage = imageArray.first!
+        imageArray.removeSubrange(1...imageArray.count - 1)
+        updateUndoButton()
     }
     
+    @IBAction func undoClicked(_ sender: Any) {
+        if imageArray.count > 1{
+            imageArray.removeLast()
+            updateUndoButton()
+            photoView.image = imageArray.last!
+            photoView.incrementalImage = imageArray.last!
+        }
+    }
+    
+    private func updateUndoButton() {
+        let flag = imageArray.count > 1
+        undoButton.isEnabled = flag
+        undoButton.tintColor = flag ? .white : .lightGray
+    }
+    
+    @IBAction func lineSizeChanged(_ sender: Any) {
+        lineSize = Double(lineSizeSlider.value)
+    }
+    @IBAction func nextStepClicked(_ sender: Any) {
+        //TODO
+    }
     @objc func saveButtonClicked(){
         askSaveType()
     }
@@ -93,12 +120,9 @@ class PhotoViewController: UIViewController, UIGestureRecognizerDelegate {
         photoView.fetchImageAsset(asset, targetSize: photoView.bounds.size, completionHandler: nil)
     }
     
-    @objc func eraseDrawing(_ sender: UITapGestureRecognizer? = nil){
-        self.photoView.setNeedsDisplay()
-    }
-    
     public func addToImageArray(_ image:UIImage?){
         imageArray.append(image)
+        updateUndoButton()
     }
     
     public func drawImage(_ incrementalImage:UIImage?){
@@ -120,6 +144,8 @@ extension PhotoViewController: PHPhotoLibraryChangeObserver {
             let lastImage = imageArray.last!
             imageArray.removeAll()
             imageArray.append(lastImage)
+            
+            updateUndoButton()
         }
     }
 }

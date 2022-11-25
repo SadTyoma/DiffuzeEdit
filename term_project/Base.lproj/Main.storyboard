@@ -31,10 +31,16 @@
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="arrow.uturn.left" catalog="system"/>
+                                                <connections>
+                                                    <action selector="undoClicked:" destination="Ki3-f5-Ytx" eventType="touchUpInside" id="F0J-3K-q8O"/>
+                                                </connections>
                                             </button>
-                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="tfK-iK-Ngf">
+                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minValue="5" maxValue="20" translatesAutoresizingMaskIntoConstraints="NO" id="tfK-iK-Ngf">
                                                 <rect key="frame" x="48" y="0.0" width="344" height="76"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <connections>
+                                                    <action selector="lineSizeChanged:" destination="Ki3-f5-Ytx" eventType="valueChanged" id="4KW-zU-Z3S"/>
+                                                </connections>
                                             </slider>
                                         </subviews>
                                         <constraints>
@@ -51,10 +57,13 @@
                                         <rect key="frame" x="0.0" y="75" width="390" height="34.333333333333343"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="filled" title="Button">
+                                        <buttonConfiguration key="configuration" style="filled" title="Next step">
                                             <color key="baseForegroundColor" systemColor="labelColor"/>
                                             <color key="baseBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </buttonConfiguration>
+                                        <connections>
+                                            <action selector="nextStepClicked:" destination="Ki3-f5-Ytx" eventType="touchUpInside" id="t2r-9Y-lh8"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="labelColor"/>
@@ -98,7 +107,9 @@
                     </navigationItem>
                     <connections>
                         <outlet property="clearAllButton" destination="3Ks-eC-eOK" id="VwK-Zt-H2D"/>
+                        <outlet property="lineSizeSlider" destination="tfK-iK-Ngf" id="LBc-aD-uoX"/>
                         <outlet property="photoView" destination="A0B-4g-XOI" id="Dak-Td-Qd5"/>
+                        <outlet property="undoButton" destination="flA-AH-UIM" id="aJa-lT-udX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FyS-ZP-k64" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
