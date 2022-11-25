@@ -12,35 +12,76 @@
         <!--Photo View Controller-->
         <scene sceneID="6S8-GH-3X3">
             <objects>
-                <viewController id="Ki3-f5-Ytx" customClass="PhotoViewController" customModule="Telegram_Contest" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Ki3-f5-Ytx" customClass="PhotoViewController" customModule="term_project" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Qry-lc-6CR">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A0B-4g-XOI" customClass="UIImageViewForDrawing" customModule="term_project">
-                                <rect key="frame" x="0.0" y="91" width="390" height="589.33333333333337"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="A0B-4g-XOI" customClass="UIImageViewForDrawing" customModule="term_project">
+                                <rect key="frame" x="0.0" y="91" width="390" height="589"/>
                             </imageView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oOn-Kl-ngv">
-                                <rect key="frame" x="0.0" y="682" width="390" height="162"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oOn-Kl-ngv">
+                                <rect key="frame" x="0.0" y="680" width="390" height="164"/>
                                 <subviews>
-                                    <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="tfK-iK-Ngf">
-                                        <rect key="frame" x="8" y="24" width="376" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </slider>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xOj-OE-kb2">
-                                        <rect key="frame" x="10" y="74" width="372" height="35"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k84-IY-3yu">
+                                        <rect key="frame" x="0.0" y="0.0" width="390" height="75"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="flA-AH-UIM">
+                                                <rect key="frame" x="0.0" y="0.0" width="50" height="75"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" image="arrow.uturn.left" catalog="system"/>
+                                            </button>
+                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="tfK-iK-Ngf">
+                                                <rect key="frame" x="48" y="0.0" width="344" height="76"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </slider>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="tfK-iK-Ngf" secondAttribute="trailing" id="47m-Ye-RZK"/>
+                                            <constraint firstItem="flA-AH-UIM" firstAttribute="top" secondItem="k84-IY-3yu" secondAttribute="top" id="9vB-VA-cQH"/>
+                                            <constraint firstAttribute="bottom" secondItem="tfK-iK-Ngf" secondAttribute="bottom" id="AGM-x5-eFH"/>
+                                            <constraint firstItem="tfK-iK-Ngf" firstAttribute="leading" secondItem="flA-AH-UIM" secondAttribute="trailing" id="Aam-qG-gFe"/>
+                                            <constraint firstItem="flA-AH-UIM" firstAttribute="leading" secondItem="k84-IY-3yu" secondAttribute="leading" id="Wff-Dn-kzQ"/>
+                                            <constraint firstItem="tfK-iK-Ngf" firstAttribute="top" secondItem="k84-IY-3yu" secondAttribute="top" id="aHS-RG-vD5"/>
+                                            <constraint firstAttribute="bottom" secondItem="flA-AH-UIM" secondAttribute="bottom" id="lLz-Dc-hyJ"/>
+                                        </constraints>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xOj-OE-kb2">
+                                        <rect key="frame" x="0.0" y="75" width="390" height="34.333333333333343"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="filled" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="filled" title="Button">
+                                            <color key="baseForegroundColor" systemColor="labelColor"/>
+                                            <color key="baseBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </buttonConfiguration>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" systemColor="labelColor"/>
+                                <constraints>
+                                    <constraint firstItem="xOj-OE-kb2" firstAttribute="leading" secondItem="oOn-Kl-ngv" secondAttribute="leading" id="2cF-q4-JY6"/>
+                                    <constraint firstItem="k84-IY-3yu" firstAttribute="leading" secondItem="oOn-Kl-ngv" secondAttribute="leading" id="CtA-4Q-FNT"/>
+                                    <constraint firstItem="xOj-OE-kb2" firstAttribute="width" secondItem="k84-IY-3yu" secondAttribute="width" id="Vp4-Sf-1I3"/>
+                                    <constraint firstItem="xOj-OE-kb2" firstAttribute="top" secondItem="k84-IY-3yu" secondAttribute="bottom" id="ZXW-zq-MVz"/>
+                                    <constraint firstItem="k84-IY-3yu" firstAttribute="top" secondItem="oOn-Kl-ngv" secondAttribute="top" id="hXZ-ct-Gc5"/>
+                                    <constraint firstAttribute="trailing" secondItem="xOj-OE-kb2" secondAttribute="trailing" id="vAa-Ep-lKx"/>
+                                    <constraint firstAttribute="trailing" secondItem="k84-IY-3yu" secondAttribute="trailing" id="wIq-D5-t19"/>
+                                    <constraint firstItem="xOj-OE-kb2" firstAttribute="width" secondItem="k84-IY-3yu" secondAttribute="height" multiplier="26:5" id="ze4-Xc-brv"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="1iN-2q-zTS"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="A0B-4g-XOI" firstAttribute="leading" secondItem="1iN-2q-zTS" secondAttribute="leading" id="2tO-FC-2HE"/>
+                            <constraint firstItem="oOn-Kl-ngv" firstAttribute="trailing" secondItem="1iN-2q-zTS" secondAttribute="trailing" id="3co-Ee-GCR"/>
+                            <constraint firstItem="oOn-Kl-ngv" firstAttribute="top" secondItem="A0B-4g-XOI" secondAttribute="bottom" id="8ge-be-pwU"/>
+                            <constraint firstItem="A0B-4g-XOI" firstAttribute="trailing" secondItem="1iN-2q-zTS" secondAttribute="trailing" id="9Qm-jA-wDe"/>
+                            <constraint firstItem="oOn-Kl-ngv" firstAttribute="width" secondItem="A0B-4g-XOI" secondAttribute="height" multiplier="390:589" id="SQN-3q-b0f"/>
+                            <constraint firstAttribute="bottom" secondItem="oOn-Kl-ngv" secondAttribute="bottom" id="Urk-ku-wNU"/>
+                            <constraint firstItem="A0B-4g-XOI" firstAttribute="top" secondItem="1iN-2q-zTS" secondAttribute="top" id="oYq-ae-bfu"/>
+                            <constraint firstItem="oOn-Kl-ngv" firstAttribute="leading" secondItem="1iN-2q-zTS" secondAttribute="leading" id="xk5-EJ-ZG1"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="3tm-Ht-FrY">
                         <barButtonItem key="rightBarButtonItem" title="Clear All" style="plain" id="3Ks-eC-eOK">
@@ -67,7 +108,7 @@
         <!--Main View Controller-->
         <scene sceneID="VmY-qh-kDn">
             <objects>
-                <viewController id="RPw-Gi-mkT" customClass="MainViewController" customModule="Telegram_Contest" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="RPw-Gi-mkT" customClass="MainViewController" customModule="term_project" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="dU6-oV-WHc">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -118,7 +159,7 @@
         <!--Photos Collection View Controller-->
         <scene sceneID="IYF-bq-xuW">
             <objects>
-                <collectionViewController id="hJD-TQ-tzR" customClass="PhotosCollectionViewController" customModule="Telegram_Contest" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController id="hJD-TQ-tzR" customClass="PhotosCollectionViewController" customModule="term_project" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="cMA-ZM-bQM">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -130,7 +171,7 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="photoCell" id="dw0-EP-k4U" customClass="PhotoCollectionViewCell" customModule="Telegram_Contest" customModuleProvider="target">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="photoCell" id="dw0-EP-k4U" customClass="PhotoCollectionViewCell" customModule="term_project" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="cjl-XK-Wo5">
@@ -169,6 +210,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="arrow.uturn.left" catalog="system" width="128" height="113"/>
+        <systemColor name="labelColor">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
