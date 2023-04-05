@@ -184,6 +184,18 @@ class UIImageViewForDrawing: UIImageView {
     
     private func drawLine()->UIImage?{
         let bounds = self.bounds
+        
+        let lastMask = self.photoVC.maskArray.last!!
+        UIGraphicsBeginImageContextWithOptions(bounds.size, true, 0.0)
+        lastMask.draw(in: CGRect(origin: .zero, size: bounds.size))
+        photoVC.currentColor.setStroke()
+        photoVC.currentColor.setFill()
+        fullPath.lineWidth = photoVC.lineSize
+        fullPath.stroke()
+        fullPath.fill()
+        let currentMask = UIGraphicsGetImageFromCurrentImageContext()
+        self.photoVC.maskArray.append(currentMask)
+        
         guard let image = lastImage else {return nil}
         UIGraphicsBeginImageContextWithOptions(bounds.size, true, 0.0)
         image.draw(in: CGRect(origin: .zero, size: bounds.size))

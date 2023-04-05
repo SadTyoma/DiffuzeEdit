@@ -9,17 +9,31 @@ import UIKit
 import Photos
 
 class PhotoViewController: UIViewController, UIGestureRecognizerDelegate {
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var clearAllButton: UIBarButtonItem!
     @IBOutlet weak var photoView: UIImageViewForDrawing!
     @IBOutlet weak var undoButton: UIButton!
     @IBOutlet weak var lineSizeSlider: UISlider!
     
     private var asset: PHAsset
-    private let url = "http://127.0.0.1:1324/api/v1/imageanalysis"
+    private let url = "http://api.proposer.ai:3000/inpaint"
+    private var resultImage: UIImage?{
+        didSet{
+            guard let resultImage = resultImage else {
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
+                self.performSegue(withIdentifier: "ToResultImage", sender: resultImage)
+            }
+        }
+    }
     
     public var currentColor: UIColor = .black
     public var lineSize = 10.0
     public var imageArray = [UIImage?]()
+    public var maskArray = [UIImage?]()
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) not implemented")
@@ -35,10 +49,22 @@ class PhotoViewController: UIViewController, UIGestureRecognizerDelegate {
         if imageArray.isEmpty{
             imageArray.append(photoView.image)
         }
+        
+        if maskArray.isEmpty{
+            let size = CGSize(width: photoView.bounds.width, height: photoView.bounds.height)
+            UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+            UIColor.white.setFill()
+            UIRectFill(CGRect(origin: CGPoint.zero, size: size))
+            let whiteImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            maskArray.append(whiteImage)
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        activityIndicator.hidesWhenStopped = true
         
         self.photoView.phVC = self
         self.photoView.isUserInteractionEnabled = true
@@ -46,7 +72,7 @@ class PhotoViewController: UIViewController, UIGestureRecognizerDelegate {
         
         view.isUserInteractionEnabled = true
         view.isMultipleTouchEnabled = true
-
+        
         PHPhotoLibrary.shared().register(self)
         
         updateUndoButton()
@@ -84,9 +110,6 @@ class PhotoViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBAction func nextStepClicked(_ sender: Any) {
         showAlert()
     }
-    @objc func saveButtonClicked(){
-        askSaveType()
-    }
     
     func showAlert(){
         let alert = UIAlertController(title: "", message: "What you want on image", preferredStyle: .alert)
@@ -105,69 +128,85 @@ class PhotoViewController: UIViewController, UIGestureRecognizerDelegate {
                 return
             }
             
-            //self.uploadImage(text: text, image: self.photoView.image!)
-            self.performSegue(withIdentifier: "ToResultImage", sender: nil)
+            self.uploadImage(text: text)
         }))
         
         present(alert, animated: true)
     }
     
-    func uploadImage(text: String, image: UIImage) {
-            let url = URL(string: url)
-            let boundary = UUID().uuidString
-
-            let session = URLSession.shared
-
-            var urlRequest = URLRequest(url: url!)
-            urlRequest.httpMethod = "POST"
-
-            urlRequest.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-
-            var data = Data()
-            
-            // Add the image data to the raw http request data
-            data.append("\r\n--\(boundary)\r\n".data(using: .utf8)!)
-            let paramName = "text"
-            data.append("Content-Disposition: form-data; name=\"\(paramName)\"; filename=\"\(text)\"\r\n".data(using: .utf8)!)
-            data.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
-            data.append(image.pngData()!)
-            
-            data.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
-            
-            session.uploadTask(with: urlRequest, from: data, completionHandler: { responseData, response, error in
-                    if error == nil {
-                        let jsonData = try? JSONSerialization.jsonObject(with: responseData!, options: .allowFragments)
-                        if let json = jsonData as? [String: Any] {
-                            print(json)
-                        }
-                    }
-                }).resume()
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ToResultImage" {
+            let destinationVC = segue.destination as! ResultImageViewController
+            destinationVC.resultImage = sender as? UIImage
         }
-    
-    private func askSaveType(){
-        let refreshAlert = UIAlertController(title: "Save Type", message: "Save image without borders?", preferredStyle: UIAlertController.Style.alert)
-
-        refreshAlert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction!) in
-            let image = self.getImageWithoutBorders()
-            if let image = image{
-                UIImageWriteToSavedPhotosAlbum(image, self, nil, nil)
-            }
-        }))
-
-        refreshAlert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { (action: UIAlertAction!) in
-            let image = self.imageArray.last!
-            if let image = image{
-                UIImageWriteToSavedPhotosAlbum(image, self, nil, nil)
-            }
-        }))
-
-        present(refreshAlert, animated: true, completion: nil)
     }
     
-    private func getImageWithoutBorders()->UIImage?{
+    func uploadImage(text: String) {
+        activityIndicator.startAnimating()
+
+        let image = getImageWithoutBorders(image: imageArray.first!!)!
+        let mask = getImageWithoutBorders(image: self.maskArray.last!!)!
+        let imageData = image.jpegData(compressionQuality: 1.0)!
+        let maskData = mask.jpegData(compressionQuality: 1.0)!
+        
+        let resultURL = url.appending("?prompt=\(text)")
+        let url = URL(string: resultURL)!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        let boundary = UUID().uuidString
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        var body = Data()
+        
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"image\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+        body.append(imageData)
+        body.append("\r\n".data(using: .utf8)!)
+        
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"mask\"; filename=\"mask.jpg\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+        body.append(maskData)
+        body.append("\r\n".data(using: .utf8)!)
+        
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        request.httpBody = body
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse else {
+                print("Invalid response")
+                return
+            }
+            
+            if (200...299).contains(response.statusCode) {
+                if let data = data {
+                    self.resultImage = UIImage(data: data)
+                }
+                print("Images uploaded successfully")
+            } else if response.statusCode == 422 {
+                if let data = data, let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any], let detail = json["detail"] as? [[String: Any]], let errorMessage = detail.first?["msg"] as? String {
+                    print("Validation error: \(errorMessage)")
+                } else {
+                    print("Error parsing JSON")
+                }
+            }else {
+                print("Error uploading images: \(response.statusCode)")
+            }
+        }
+        
+        task.resume()
+    }
+    
+    private func getImageWithoutBorders(image: UIImage)->UIImage?{
         guard let imageSize = photoView.imageSize, let imageOrigin = photoView.imageOrigin  else {return nil}
         UIGraphicsBeginImageContextWithOptions(imageSize, true, 0.0)
-        photoView.image!.draw(at: CGPoint(x: -imageOrigin.x, y: -imageOrigin.y))
+        image.draw(at: CGPoint(x: -imageOrigin.x, y: -imageOrigin.y))
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         
         return newImage
