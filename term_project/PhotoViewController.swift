@@ -65,6 +65,8 @@ class PhotoViewController: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         
         activityIndicator.hidesWhenStopped = true
+        activityIndicator.style = .large
+        activityIndicator.color = .gray
         
         self.photoView.phVC = self
         self.photoView.isUserInteractionEnabled = true
