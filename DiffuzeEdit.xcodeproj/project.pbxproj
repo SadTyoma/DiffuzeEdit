@@ -56,7 +56,7 @@
 		9A084492292FF7700003D691 = {
 			isa = PBXGroup;
 			children = (
-				9A08449D292FF7700003D691 /* term_project */,
+				9A08449D292FF7700003D691 /* DiffuzeEdit */,
 				9A08449C292FF7700003D691 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -69,7 +69,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9A08449D292FF7700003D691 /* term_project */ = {
+		9A08449D292FF7700003D691 /* DiffuzeEdit */ = {
 			isa = PBXGroup;
 			children = (
 				9A08449E292FF7700003D691 /* AppDelegate.swift */,
@@ -88,7 +88,7 @@
 				9A0844A9292FF7710003D691 /* LaunchScreen.storyboard */,
 				9A0844AC292FF7710003D691 /* Info.plist */,
 			);
-			path = term_project;
+			path = DiffuzeEdit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
