@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:">
+      location = "self:/Users/artyom/xcodeProjects/term_project/DiffuzeEdit.xcodeproj">
    </FileRef>
 </Workspace>
